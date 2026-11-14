@@ -15,6 +15,7 @@ export type DigestRow = {
 export type Night = {
   night: string; // YYYY-MM-DD
   rows: DigestRow[]; // sorted by job
+  counts: Record<JobStatus, number>; // log lines per status
   badLines: number; // lines that did not parse, counted and never thrown
 };
 
