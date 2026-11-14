@@ -1,0 +1,44 @@
+import type { Night } from '../digest/types.js';
+
+const dash = '—';
+
+export function DigestPage({ night }: { night: Night }) {
+  return (
+    <>
+      <h1>digest {night.night}</h1>
+      {night.badLines > 0 ? <p class="mute">{night.badLines} unparsed lines</p> : null}
+      {night.rows.length === 0 ? (
+        <p class="mute">nothing ran</p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>job</th>
+              <th>owner</th>
+              <th>runs</th>
+              <th>retries</th>
+              <th>last status</th>
+              <th>last error</th>
+              <th>first</th>
+              <th>last</th>
+            </tr>
+          </thead>
+          <tbody>
+            {night.rows.map((r) => (
+              <tr class={r.retries >= 3 || r.lastStatus === 'fail' ? 'warn' : undefined}>
+                <td>{r.job || dash}</td>
+                <td>{r.owner ?? dash}</td>
+                <td>{r.runs}</td>
+                <td>{r.retries}</td>
+                <td>{r.lastStatus}</td>
+                <td>{r.lastError || dash}</td>
+                <td>{r.first || dash}</td>
+                <td>{r.last || dash}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </>
+  );
+}
